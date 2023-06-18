@@ -10,3 +10,13 @@ taxa<-cbind(TAXA,otu) #TAXA es la tabla que envié antes solo que le pusi ese no
 ##hola esto es una prueba
 otu_mat <- as.matrix(taxa) # convitiendo tabla en taxa
 TAX = tax_table(otu_mat)
+
+otus<-read.csv("PF_GF/raw_data/tabla2.csv")
+otus1<-otus[,-1] ## quitando primera linea
+otu_mat <- as.matrix(otus1)
+OTU = otu_table(otu_mat, taxa_are_rows = TRUE) # tomará cada fila como un otu
+
+samples = sample_names(samplenames)
+
+datos <- phyloseq(OTU, TAX, samples)
+datos
