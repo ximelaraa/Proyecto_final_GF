@@ -8,4 +8,5 @@ otu
 taxa<-cbind(TAXA,otu) #TAXA es la tabla que envié antes solo que le pusi ese nombre
 
 ##hola esto es una prueba
-otu_mat <- as.matrix(taxa)
+otu_mat <- as.matrix(taxa) # convitiendo tabla en taxa
+TAX = tax_table(otu_mat)
