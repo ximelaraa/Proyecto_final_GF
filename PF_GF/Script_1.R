@@ -1,6 +1,6 @@
 ## De .csv a phyloseq
 TAXA <- read_delim("PF_GF/domain;phylum;class;order;family;ge.txt", 
-                   +     delim = ";", escape_double = FALSE, trim_ws = TRUE)
+        +   delim = ";", escape_double = FALSE, trim_ws = TRUE)
 o<-sequence(3759)
 t<-rep("otu", 3759) 
 otu<-paste(t,o, sep = "_")
