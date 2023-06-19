@@ -1,4 +1,7 @@
 ## De .csv a phyloseq
+
+library(phyloseq)
+library(readxl)
 TAXA <- read_delim("PF_GF/domain;phylum;class;order;family;ge.txt", 
         +   delim = ";", escape_double = FALSE, trim_ws = TRUE)
 o<-sequence(3759)
@@ -15,10 +18,14 @@ otus<-read.csv("PF_GF/raw_data/tabla2.csv")
 otus1<-otus[,-1] ## quitando primera COLUMNA
 otu_mat <- as.matrix(otus1)
 OTU = otu_table(otu_mat, taxa_are_rows = TRUE)# tomará cada fila como un otu
-muestras<-data.frame(c(Sample, samplenames))
+samples_df <- read_excel("PF_GF/raw_data/samplenames1.xlsx")
 
-samples = sample_names(sample)
 
-library(phyloseq)
-datos <- phyloseq(OTU, TAX, samples)
+samples_df <- samples_df %>% 
+  tibble::column_to_rownames("Sample")
+samples = sample_data(samples_df)
+
+
+datos <- phyloseq(OTU, TAX,samples)
+datos
 plot_bar(datos, fill = "DOMAIN")
