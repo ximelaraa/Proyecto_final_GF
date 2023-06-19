@@ -30,3 +30,4 @@ datos <- phyloseq(OTU, TAX,samples)
 datos
 plot_bar(datos, fill = "DOMAIN")
 
+# aló
