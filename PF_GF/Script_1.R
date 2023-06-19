@@ -29,3 +29,6 @@ samples = sample_data(samples_df)
 datos <- phyloseq(OTU, TAX,samples)
 datos
 plot_bar(datos, fill = "DOMAIN")
+
+sample(1:10, 10)
+
