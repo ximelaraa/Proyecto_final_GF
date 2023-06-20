@@ -2,6 +2,7 @@
 
 library(phyloseq)
 library(readxl)
+library(ggplot2)
 TAXA <- read_delim("PF_GF/domain;phylum;class;order;family;ge.txt", 
         +   delim = ";", escape_double = FALSE, trim_ws = TRUE)
 o<-sequence(3759)
@@ -40,3 +41,5 @@ plot_bar(datos,"dia", facet_grid =~DOMAIN)
 plot_bar(datos,"dia",fill="tratamiento", facet_grid =~DOMAIN)
 plot_bar(datos,"tratamiento", fill="subject", facet_grid =~DOMAIN)
 
+alpha_meas = c("Shannon", "Simpson", "InvSimpson")
+(p <- plot_richness(datos,"dia","tratamiento",measures = alpha_meas))
