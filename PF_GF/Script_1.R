@@ -3,13 +3,13 @@
 library(phyloseq)
 library(readxl)
 library(ggplot2)
-TAXA <- read_delim("PF_GF/domain;phylum;class;order;family;ge.txt", 
+TAXA <- read_delim("PF_GF/domain;phylum;class;order;family;ge.txt", #lee la tabla donde viene la taxonomía
         +   delim = ";", escape_double = FALSE, trim_ws = TRUE)
-o<-sequence(3759)
+o<-sequence(3759) 
 t<-rep("otu", 3759) 
-otu<-paste(t,o, sep = "_")
+otu<-paste(t,o, sep = "_") #creando la columna de número de otu
 otu
-taxa<-cbind(TAXA,otu) #TAXA es la tabla que envié antes solo que le pusi ese nombre
+taxa<-cbind(TAXA,otu) #añadiendo la comluna de otu a la tabla
 
 otu_mat <- as.matrix(taxa) # convitiendo tabla en taxa
 TAX = tax_table(otu_mat)
@@ -22,13 +22,17 @@ OTU = otu_table(otu_mat, taxa_are_rows = TRUE)# tomará cada fila como un otu
 samples_df <- read_excel("PF_GF/raw_data/samplenames1.xlsx")
 
 
-samples_df <- samples_df %>% 
+samples_df <- samples_df %>% #definiendo los nombres de las filas de la columna otu
   tibble::column_to_rownames("Sample")
 samples = sample_data(samples_df)
 
 
 datos <- phyloseq(OTU, TAX,samples)
 datos
+ #visualización de datos
+sample_names(datos)
+rank_names(datos)
+sample_variables(datos)
 
 ### Gráficos con el objeto phyloseq ----
 plot_bar(datos, fill = "DOMAIN")
@@ -51,7 +55,7 @@ filtro_taxa <- names(suma_abundancias[suma_abundancias < umbral])
 datos_filtrados <- prune_taxa(filtro_taxa, datos)
 datos_filtrados #objeto phyloseq con el filtrado 
 
-### Gráficos con el filtrado
+### Gráficos con el filtrado ----
 plot_bar(datos_filtrados, fill = "DOMAIN")
 plot_bar(datos_filtrados, fill="subject", facet_grid=~DOMAIN)
 plot_bar(datos_filtrados, fill="zona", facet_grid=~DOMAIN)
