@@ -40,3 +40,10 @@ plot_bar(datos,"dia", facet_grid =~DOMAIN)
 plot_bar(datos,"dia",fill="tratamiento", facet_grid =~DOMAIN)
 plot_bar(datos,"tratamiento", fill="subject", facet_grid =~DOMAIN)
 
+tabla_abundancias <- otu_table(datos)
+suma_abundancias <- rowSums(tabla_abundancias)
+umbral <- 0.00001
+filtro_taxa <- names(suma_abundancias[suma_abundancias < umbral])
+datos_filtrados <- prune_taxa(filtro_taxa, datos)
+
+
