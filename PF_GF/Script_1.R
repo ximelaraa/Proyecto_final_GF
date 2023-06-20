@@ -35,14 +35,29 @@ rank_names(datos)
 sample_variables(datos)
 
 ### Gráficos con el objeto phyloseq ----
-plot_bar(datos, fill = "DOMAIN")
-plot_bar(datos, fill="subject", facet_grid=~DOMAIN)
-plot_bar(datos, fill="zona", facet_grid=~DOMAIN)
-plot_bar(datos, fill="tratamiento", facet_grid=~DOMAIN)
-plot_bar(datos, fill="dia", facet_grid=~DOMAIN)
-plot_bar(datos,"dia", facet_grid =~DOMAIN)
-plot_bar(datos,"dia",fill="tratamiento", facet_grid =~DOMAIN)
+plot_bar(datos, fill = "DOMAIN")+ #sample vs abundance por dominio
+  geom_bar(aes(color=DOMAIN, fill=DOMAIN), stat="identity", position="stack")
+
+plot_bar(datos, fill="subject", facet_grid=~DOMAIN) +
+  geom_bar(aes(color=subject, fill=subject), stat="identity", position="stack")
+
+plot_bar(datos, fill="zona", facet_grid=~DOMAIN) +
+  geom_bar(aes(color=zona, fill=zona), stat="identity", position="stack")
+
+plot_bar(datos, fill="tratamiento", facet_grid=~DOMAIN) +
+  geom_bar(aes(color=tratamiento, fill=tratamiento), stat="identity", position="stack")
+
+plot_bar(datos, fill="dia", facet_grid=~DOMAIN) +
+  geom_bar(aes(color=dia, fill=dia), stat="identity", position="stack")
+
+plot_bar(datos,"dia", facet_grid =~DOMAIN) +
+  geom_bar(aes(color=DOMAIN), stat="identity", position="stack")
+
+plot_bar(datos,"dia",fill="tratamiento", facet_grid =~DOMAIN) +
+  geom_bar(aes(color=tratamiento, fill=tratamiento), stat="identity", position="stack")
+
 plot_bar(datos,"tratamiento", fill="subject", facet_grid =~DOMAIN)
+
 #estimadores de la diversidad alfa
 alpha_meas = c("Shannon", "Simpson", "InvSimpson")
 (p <- plot_richness(datos,"dia","tratamiento",measures = alpha_meas))
@@ -55,6 +70,9 @@ filtro_taxa <- names(suma_abundancias[suma_abundancias < umbral])
 datos_filtrados <- prune_taxa(filtro_taxa, datos)
 datos_filtrados #objeto phyloseq con el filtrado 
 
+sample_names(datos_filtrados)
+rank_names(datos_filtrados)
+sample_variables(datos_filtrados)
 ### Gráficos con el filtrado ----
 plot_bar(datos_filtrados, fill = "DOMAIN")
 plot_bar(datos_filtrados, fill="subject", facet_grid=~DOMAIN)
