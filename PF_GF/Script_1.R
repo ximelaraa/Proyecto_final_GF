@@ -2,6 +2,7 @@
 
 library(phyloseq)
 library(readxl)
+library(ggplot2)
 TAXA <- read_delim("PF_GF/domain;phylum;class;order;family;ge.txt", 
         +   delim = ";", escape_double = FALSE, trim_ws = TRUE)
 o<-sequence(3759)
@@ -40,10 +41,14 @@ plot_bar(datos,"dia", facet_grid =~DOMAIN)
 plot_bar(datos,"dia",fill="tratamiento", facet_grid =~DOMAIN)
 plot_bar(datos,"tratamiento", fill="subject", facet_grid =~DOMAIN)
 
+
 tabla_abundancias <- otu_table(datos)
 suma_abundancias <- rowSums(tabla_abundancias)
 umbral <- 0.00001
 filtro_taxa <- names(suma_abundancias[suma_abundancias < umbral])
 datos_filtrados <- prune_taxa(filtro_taxa, datos)
 
+
+alpha_meas = c("Shannon", "Simpson", "InvSimpson")
+(p <- plot_richness(datos,"dia","tratamiento",measures = alpha_meas))
 
