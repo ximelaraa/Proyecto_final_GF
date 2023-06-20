@@ -1,4 +1,4 @@
-## De .csv a phyloseq
+### De .csv a phyloseq ----
 
 library(phyloseq)
 library(readxl)
@@ -30,9 +30,8 @@ samples = sample_data(samples_df)
 datos <- phyloseq(OTU, TAX,samples)
 datos
 
-
+### Gráficos con el objeto phyloseq ----
 plot_bar(datos, fill = "DOMAIN")
-
 plot_bar(datos, fill="subject", facet_grid=~DOMAIN)
 plot_bar(datos, fill="zona", facet_grid=~DOMAIN)
 plot_bar(datos, fill="tratamiento", facet_grid=~DOMAIN)
@@ -40,15 +39,28 @@ plot_bar(datos, fill="dia", facet_grid=~DOMAIN)
 plot_bar(datos,"dia", facet_grid =~DOMAIN)
 plot_bar(datos,"dia",fill="tratamiento", facet_grid =~DOMAIN)
 plot_bar(datos,"tratamiento", fill="subject", facet_grid =~DOMAIN)
+#estimadores de la diversidad alfa
+alpha_meas = c("Shannon", "Simpson", "InvSimpson")
+(p <- plot_richness(datos,"dia","tratamiento",measures = alpha_meas))
 
-
+### Creación del filtrado que deje únicamente los datos más relevantes ----
 tabla_abundancias <- otu_table(datos)
 suma_abundancias <- rowSums(tabla_abundancias)
 umbral <- 0.00001
 filtro_taxa <- names(suma_abundancias[suma_abundancias < umbral])
 datos_filtrados <- prune_taxa(filtro_taxa, datos)
+datos_filtrados #objeto phyloseq con el filtrado 
 
-
+### Gráficos con el filtrado
+plot_bar(datos_filtrados, fill = "DOMAIN")
+plot_bar(datos_filtrados, fill="subject", facet_grid=~DOMAIN)
+plot_bar(datos_filtrados, fill="zona", facet_grid=~DOMAIN)
+plot_bar(datos_filtrados, fill="tratamiento", facet_grid=~DOMAIN)
+plot_bar(datos_filtrados, fill="dia", facet_grid=~DOMAIN)
+plot_bar(datos_filtrados,"dia", facet_grid =~DOMAIN)
+plot_bar(datos_filtrados,"dia",fill="tratamiento", facet_grid =~DOMAIN)
+plot_bar(datos_filtrados,"tratamiento", fill="subject", facet_grid =~DOMAIN)
+#estimadores de la diversidad alfa
 alpha_meas = c("Shannon", "Simpson", "InvSimpson")
-(p <- plot_richness(datos,"dia","tratamiento",measures = alpha_meas))
+(p <- plot_richness(datos_filtrados,"dia","tratamiento",measures = alpha_meas))
 
