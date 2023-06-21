@@ -62,27 +62,45 @@ plot_bar(datos,"tratamiento", fill="subject", facet_grid =~DOMAIN)
 alpha_meas = c("Shannon", "Simpson", "InvSimpson")
 (p <- plot_richness(datos,"dia","tratamiento",measures = alpha_meas))
 
+
 ### Creación del filtrado que deje únicamente los datos más relevantes ----
 tabla_abundancias <- otu_table(datos)
 suma_abundancias <- rowSums(tabla_abundancias)
 umbral <- 0.00001
-filtro_taxa <- names(suma_abundancias[suma_abundancias < umbral])
+filtro_taxa <- names(suma_abundancias[suma_abundancias > umbral])
 datos_filtrados <- prune_taxa(filtro_taxa, datos)
-datos_filtrados #objeto phyloseq con el filtrado 
+datos_filtrados #objeto phyloseq con el filtrado
 
-sample_names(datos_filtrados)
-rank_names(datos_filtrados)
-sample_variables(datos_filtrados)
+#normalización de los datos filtrados
+samples_filtro <- sample_names(datos_filtrados)
+nuevos_datos <- transform_sample_counts(datos_filtrados, function(x) x / sum(x))
+sum(otu_table(nuevos_datos)[,1]) #Si la suma es igual a 1 entonces se ha normalizado
+
+
+sample_names(nuevos_datos)
+rank_names(nuevos_datos)
+sample_variables(nuevos_datos)
 ### Gráficos con el filtrado ----
-plot_bar(datos_filtrados, fill = "DOMAIN")
-plot_bar(datos_filtrados, fill="subject", facet_grid=~DOMAIN)
-plot_bar(datos_filtrados, fill="zona", facet_grid=~DOMAIN)
-plot_bar(datos_filtrados, fill="tratamiento", facet_grid=~DOMAIN)
-plot_bar(datos_filtrados, fill="dia", facet_grid=~DOMAIN)
-plot_bar(datos_filtrados,"dia", facet_grid =~DOMAIN)
-plot_bar(datos_filtrados,"dia",fill="tratamiento", facet_grid =~DOMAIN)
-plot_bar(datos_filtrados,"tratamiento", fill="subject", facet_grid =~DOMAIN)
+plot_bar(nuevos_datos, fill = "DOMAIN")
+plot_bar(nuevos_datos, fill="subject", facet_grid=~DOMAIN)
+plot_bar(nuevos_datos, fill="zona", facet_grid=~DOMAIN)
+plot_bar(nuevos_datos, fill="tratamiento", facet_grid=~DOMAIN)
+plot_bar(nuevos_datos, fill="dia", facet_grid=~DOMAIN)
+plot_bar(nuevos_datos,"dia", facet_grid =~DOMAIN)
+plot_bar(nuevos_datos,"dia",fill="tratamiento", facet_grid =~DOMAIN)
+plot_bar(nuevos_datos,"tratamiento", fill="subject", facet_grid =~DOMAIN)
 #estimadores de la diversidad alfa
 alpha_meas = c("Shannon", "Simpson", "InvSimpson")
-(p <- plot_richness(datos_filtrados,"dia","tratamiento",measures = alpha_meas))
+(p <- plot_richness(nuevos_datos,"dia","tratamiento",measures = alpha_meas))
+
+#Gráficos exploratorios
+
+barplot(sort(taxa_sums(datos), TRUE)/nsamples(datos), las=2) + title(main = "Todos los datos") 
+barplot(sort(taxa_sums(datos), TRUE)[1:30]/nsamples(datos), las=2)  + title(main = "Primeros 30")
+
+#Demasiados datos irrelevantes
+
+barplot(sort(taxa_sums(nuevos_datos), TRUE)/nsamples(nuevos_datos), las=2) + title(main = "Todos los datos filtrados")
+barplot(sort(taxa_sums(nuevos_datos), TRUE)[1:30]/nsamples(nuevos_datos), las=2)  + title(main = "Primeros 30")
+
 
