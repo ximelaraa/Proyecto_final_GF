@@ -85,13 +85,24 @@ sample_names(nuevos_datos)
 rank_names(nuevos_datos)
 sample_variables(nuevos_datos)
 ### Gráficos con el filtrado ----
-plot_bar(nuevos_datos, fill = "DOMAIN")
-plot_bar(nuevos_datos, fill="subject", facet_grid=~DOMAIN)
-plot_bar(nuevos_datos, fill="zona", facet_grid=~DOMAIN)
-plot_bar(nuevos_datos, fill="tratamiento", facet_grid=~DOMAIN)
-plot_bar(nuevos_datos, fill="dia", facet_grid=~DOMAIN)
-plot_bar(nuevos_datos,"dia", facet_grid =~DOMAIN)
-plot_bar(nuevos_datos,"dia",fill="tratamiento", facet_grid =~DOMAIN)
+plot_bar(nuevos_datos, fill = "DOMAIN") + 
+  geom_bar(aes(color=DOMAIN, fill=DOMAIN), stat="identity", position="stack")
+
+plot_bar(nuevos_datos, fill="subject", facet_grid=~DOMAIN) +
+  geom_bar(aes(color=subject, fill=subject), stat="identity", position="stack")
+
+plot_bar(nuevos_datos, fill="zona", facet_grid=~DOMAIN) +
+  geom_bar(aes(color=zona, fill=zona), stat="identity", position="stack")
+
+plot_bar(nuevos_datos, fill="tratamiento", facet_grid=~DOMAIN) +
+  geom_bar(aes(color=tratamiento, fill=tratamiento), stat="identity", position="stack")
+
+plot_bar(nuevos_datos, fill="dia", facet_grid=~DOMAIN) +
+  geom_bar(aes(color=dia, fill=dia), stat="identity", position="stack")
+
+plot_bar(nuevos_datos,"dia",fill="tratamiento", facet_grid =~DOMAIN) +
+  geom_bar(aes(color=tratamiento, fill=tratamiento), stat="identity", position="stack")
+
 plot_bar(nuevos_datos,"tratamiento", fill="subject", facet_grid =~DOMAIN)
 #estimadores de la diversidad alfa
 alpha_meas = c("Shannon", "Simpson", "InvSimpson")
