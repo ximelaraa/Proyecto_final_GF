@@ -4,6 +4,7 @@ library(phyloseq)
 library(readxl)
 library(ggplot2)
 library(tibble)
+library(vegan)
 TAXA <- read_delim("PF_GF/domain;phylum;class;order;family;ge.txt", #lee la tabla donde viene la taxonomía
         +   delim = ";", escape_double = FALSE, trim_ws = TRUE)
 o<-sequence(3759) 
@@ -108,3 +109,19 @@ barplot(sort(taxa_sums(nuevos_datos), TRUE)[1:30]/nsamples(nuevos_datos), las=2)
 plot_bar(nuevos_datos,"DOMAIN",fill="tratamiento" ,facet_grid =~dia)
 plot_bar(nuevos_datos,"DOMAIN",fill="tratamiento" ,facet_grid =~subject)
 plot_bar(nuevos_datos,"DOMAIN",fill="dia" ,facet_grid =~zona)
+
+
+###diversidad beta metodo bray curtis
+bray <- phyloseq::distance(datos_filtrados, method = "bray")
+bray <- as.matrix(bray)
+boxplot(bray)
+
+
+ord = ordinate(datos_filtrados, method="PCoA", distance = "bray")
+
+
+plot_ordination(datos_filtrados, ord, color = "subject", shape="tratamiento") + 
+  geom_point(size=4) + 
+  stat_ellipse(aes(group=subject))
+
+
