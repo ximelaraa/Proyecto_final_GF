@@ -125,6 +125,7 @@ plot_bar(nuevos_datos,"DOMAIN",fill="dia" ,facet_grid =~zona)
 ###diversidad beta metodo bray curtis
 bray <- phyloseq::distance(datos_filtrados, method = "bray")
 bray <- as.matrix(bray)
+bray
 boxplot(bray)
 
 
