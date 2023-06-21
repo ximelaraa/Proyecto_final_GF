@@ -125,5 +125,5 @@ plot_ordination(datos_filtrados, ord, color = "subject", shape="tratamiento") +
   stat_ellipse(aes(group=subject))
 
 plot_ordination(datos_filtrados, ord, type="taxa", color="DOMAIN", 
-               title="OTUs", label="PHYLUM") + 
+               title="OTUs", label="GENUS") + 
   facet_wrap(~DOMAIN, 3)
