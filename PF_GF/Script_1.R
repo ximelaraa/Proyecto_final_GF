@@ -135,3 +135,23 @@ plot_ordination(datos_filtrados, ord, color = "dia", shape="subject") +
 plot_ordination(datos_filtrados, ord, type="taxa", color="DOMAIN", 
                title="OTUs", label="GENUS") + 
   facet_wrap(~DOMAIN, 3)
+
+#Gráficas informativas
+
+#separamos los sujetos que recibieron el tratamiento con doxiciclina
+dox_subjects <- subset_samples(nuevos_datos, tratamiento=="Dox")
+#tomamos las 15 mayores abundancias 
+dox_subjects_taxa <- names(sort(taxa_sums(dox_subjects), TRUE)[1:15])
+#genramos un nuevo objeto phyloseq
+ent10   <- prune_taxa(dox_subjects_taxa, dox_subjects)
+#Comparamos el tratamiento que recibieron los sujetos con los géneros más abundantes
+plot_bar(ent10, "tratamiento", fill="GENUS", facet_grid=~subject)
+
+#Grafico de red de la interacción de las muestras
+plot_net(datos_filtrados, maxdist=0.4, color="tratamiento", shape="subject") +
+  scale_shape_manual(values = c(0,1,2,3,5,6,7,8,9,10,11,12,13,14))
+x
+#heatmap
+gpac <- subset_taxa(nuevos_datos, CLASS=="Actinobacteria")
+(p <- plot_heatmap(gpac, "NMDS", "bray", "subject", "ORDER")) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 5))
