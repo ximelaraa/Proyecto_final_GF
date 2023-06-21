@@ -130,10 +130,6 @@ boxplot(bray)
 
 ord = ordinate(datos_filtrados, method="PCoA", distance = "bray")
 
-
-plot_ordination(datos_filtrados, ord, color = "subject", shape="tratamiento") + 
-  geom_point(size=4) + 
-  stat_ellipse(aes(group=subject))
 plot_ordination(datos_filtrados, ord, color = "dia", shape="subject") + 
   geom_point(size=4) + 
   stat_ellipse(aes(group=tratamiento))+
