@@ -124,4 +124,6 @@ plot_ordination(datos_filtrados, ord, color = "subject", shape="tratamiento") +
   geom_point(size=4) + 
   stat_ellipse(aes(group=subject))
 
-
+plot_ordination(datos_filtrados, ord, type="taxa", color="DOMAIN", 
+               title="OTUs", label="PHYLUM") + 
+  facet_wrap(~DOMAIN, 3)
