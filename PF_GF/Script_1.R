@@ -108,11 +108,6 @@ plot_bar(nuevos_datos,"tratamiento", fill="subject", facet_grid =~DOMAIN)
 alpha_meas = c("Shannon", "Simpson", "InvSimpson")
 (p <- plot_richness(nuevos_datos,"dia","tratamiento",measures = alpha_meas))
 
-#Gráficos exploratorios
-
-barplot(sort(taxa_sums(datos), TRUE)/nsamples(datos), las=2) + title(main = "Todos los datos") 
-barplot(sort(taxa_sums(datos), TRUE)[1:30]/nsamples(datos), las=2)  + title(main = "Primeros 30")
-
 #Demasiados datos irrelevantes
 
 barplot(sort(taxa_sums(nuevos_datos), TRUE)/nsamples(nuevos_datos), las=2) + title(main = "Todos los datos filtrados")
