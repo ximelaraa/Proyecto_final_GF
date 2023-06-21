@@ -3,6 +3,7 @@
 library(phyloseq)
 library(readxl)
 library(ggplot2)
+library(tibble)
 TAXA <- read_delim("PF_GF/domain;phylum;class;order;family;ge.txt", #lee la tabla donde viene la taxonomía
         +   delim = ";", escape_double = FALSE, trim_ws = TRUE)
 o<-sequence(3759) 
@@ -14,7 +15,9 @@ taxa<-cbind(TAXA,otu) #añadiendo la comluna de otu a la tabla
 otu_mat <- as.matrix(taxa) # convitiendo tabla en taxa
 TAX = tax_table(otu_mat)
 
+
 otus<-read.csv("PF_GF/raw_data/tabla2.csv")
+
 
 otus1<-otus[,-1] ## quitando primera COLUMNA
 otu_mat <- as.matrix(otus1)
@@ -102,5 +105,6 @@ barplot(sort(taxa_sums(datos), TRUE)[1:30]/nsamples(datos), las=2)  + title(main
 
 barplot(sort(taxa_sums(nuevos_datos), TRUE)/nsamples(nuevos_datos), las=2) + title(main = "Todos los datos filtrados")
 barplot(sort(taxa_sums(nuevos_datos), TRUE)[1:30]/nsamples(nuevos_datos), las=2)  + title(main = "Primeros 30")
-
-
+plot_bar(nuevos_datos,"DOMAIN",fill="tratamiento" ,facet_grid =~dia)
+plot_bar(nuevos_datos,"DOMAIN",fill="tratamiento" ,facet_grid =~subject)
+plot_bar(nuevos_datos,"DOMAIN",fill="dia" ,facet_grid =~zona)
